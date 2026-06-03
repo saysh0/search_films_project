@@ -257,17 +257,11 @@ class UI:
                     self.user_current_query, self.limit, self.offset
                 )
             elif self.search_mode == "genre":
-                movies = self.db.show_all_categories(
-                    self.user_current_query, self.limit, self.offset
-                )
+                movies = self.db.search_film_by_category(self.user_current_query, self.limit, self.offset)
             elif self.search_mode == "year_single":
-                movies = self.db.search_film_by_year(
-                    self.user_current_query, self.limit, self.offset
-                )
+                movies = self.db.search_film_by_year(self.user_current_query, self.limit, self.offset)
             elif self.search_mode == "year_range":
-                movies = self.db.search_film_by_years_range(
-                    self.year_start, self.year_end, self.limit, self.offset
-                )
+                movies = self.db.search_film_by_years_range(self.year_start, self.year_end, self.limit, self.offset)
             else:
                 movies = []
 
