@@ -1,4 +1,5 @@
 import os
+import webbrowser
 from typing import Any, Dict, List, Optional
 
 
@@ -268,8 +269,9 @@ class UI:
 
             elif choice == "5":
                 print("╔" + "═" * 67 + "╗")
-                print(f"║{"The program has been successfully closed.See you next time!".center(67) + '║'}")
+                print(f"║{"The program has been successfully closed. See you next time!".center(67) + '║'}")
                 print("╚" + "═" * 67 + "╝")
+                webbrowser.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
                 break
             else:
                 print("╔" + "═" * 67 + "╗")
