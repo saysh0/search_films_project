@@ -34,19 +34,19 @@ class UI:
         title: str = "KINO_SEARCH_FILMS BY Nikita"
         print("╔" + "═" * 50 + "╗")
         print(f"║{title.center(50)}║")
-        print("╚" + "═" * 50 + "╝")
+        print("╠" + "═" * 50 + "╣")
 
     def print_menu(self) -> None:
         """
         Prints the main navigation menu items to the screen.
         """
-        print("\n  MAIN MENU:")
-        print("  1. 🔍 Search Movie by Title")
-        print("  2. 🎭 Search Movie by Genre")
-        print("  3. 📅 Search Movie by Year / Period")
-        print("  4. 📊 View Search Statistics (MongoDB)")  # <-- НАША НОВАЯ КНОПКА
-        print("  5. ❌ Exit")
-        print("-" * 52)
+        print("║ MAIN MENU:".ljust(51) + "║")
+        print("║ 1. Search Movie by Title".ljust(51) + "║")
+        print("║ 2. Search Movie by Genre".ljust(51) + "║")
+        print("║ 3. Search Movie by Year / Period".ljust(51) + "║")
+        print("║ 4. View Search Statistics (MongoDB)".ljust(51) + "║")
+        print("║ 5. Exit".ljust(51) + "║")
+        print("╚" + "═" * 50 + "╝")
 
     def show_results_visual(self, sql_result: List[Dict[str, Any]], current_page: int) -> None:
         """
@@ -55,9 +55,9 @@ class UI:
         :param sql_result: List of dictionaries containing movie details from PyMySQL.
         :param current_page: The sequential number of the page currently being displayed.
         """
-        print("\n" + "=" * 35)
-        print(f"  SEARCH RESULTS (Page {current_page})")
-        print("=" * 35)
+        print("╔" + "═" * 35 + "╗")
+        print(f"║ {f"SEARCH RESULTS (Page {current_page})".center(34) + '║'}")
+        print("╚" + "═" * 35 + "╝")
 
         start_number: int = self.offset + 1
 
@@ -72,7 +72,7 @@ class UI:
             print(f"  📅 Year: {release_year}  |  ⏳ Duration: {length} min.")
             print(f"  🎭 Categories: {film_categories}")
             print(f"  📝 Description: {description}")
-            print("-" * 60)
+            print("═" * (len(description) + 18))
 
     @staticmethod
     def _sanitize_input(user_input: str) -> str:
@@ -96,28 +96,33 @@ class UI:
         genres: Optional[List[Dict[str, Any]]] = self.db.show_all_categories()
 
         if not genres:
-            print("\n[!] Error: Unable to load categories from the database.")
-            input("\nPress Enter to return to Main Menu...")
+            print("\n╔" + "═" * 66 + "╗")
+            print(f"║{"[!] Error: Unable to load categories from the database.".center(66) + '║'}")
+            print("╠" + "═" * 66 + "╣")
+            input(f"║{"Press Enter to continue...".center(66) + '║'}\n{"╚" + "═" * 66 + "╝"}")
             return None
 
-        print("\n" + "=" * 30)
-        print("     AVAILABLE CATEGORIES")
-        print("=" * 30)
+        print("╔" + "═" * 35 + "╗")
+        print(f"║{'AVAILABLE CATEGORIES'.center(35) + '║'}")
+        print("╚" + "═" * 35 + "╝")
 
         for num, genre in enumerate(genres, 1):
             genre_name: str = genre.get('name') or genre.get('category_name') or 'Unknown'
             print(f"  {num}. 🎭 {genre_name}")
-        print("-" * 30)
 
         while True:
-            print("Enter 0 to return to the Main Menu.")
+            print("╔" + "═" * 37 + "╗")
+            print(f"║{'Enter 0 to return to the Main Menu.'.center(37) + '║'}")
+            print("╚" + "═" * 37 + "╝")
             user_choice: str = input("Select a category number or enter name manually: ").strip()
 
             if user_choice == "0":
                 return None
 
             if not user_choice:
-                print("Error: Input cannot be empty!")
+                print("╔" + "═" * 41 + "╗")
+                print(f"║{"Error: Input cannot be empty!".center(41) + '║'}")
+                print("╚" + "═" * 41 + "╝")
                 continue
 
             if user_choice.isdigit():
@@ -126,7 +131,9 @@ class UI:
                     selected_dict: Dict[str, Any] = genres[idx]
                     return selected_dict.get('name') or selected_dict.get('category_name')
                 else:
-                    print("Error: Invalid category number! Please try again.")
+                    print("╔" + "═" * 50 + "╗")
+                    print(f"║{"Error: Invalid category number! Please try again.".center(50) + '║'}")
+                    print("╚" + "═" * 50 + "╝")
                     continue
             return user_choice
 
@@ -143,15 +150,15 @@ class UI:
         min_year: Any = min_year_data[0]['release_year']
         max_year: Any = max_year_data[0]['release_year']
 
-        print("\n" + "=" * 35)
-        print("       SEARCH MOVIES BY YEAR")
-        print("=" * 35)
-        print(f"  Available database range: {min_year} - {max_year}")
-        print("-" * 35)
-        print("  1. Search by a Specific Year")
-        print("  2. Search by a Time Period Range")
-        print("  0. Return to Main Menu")
-        print("-" * 35)
+        print("╔" + "═" * 41 + "╗")
+        print(f"║{"SEARCH MOVIES BY YEAR".center(41) + '║'}")
+        print("╠" + "═" * 41 + "╣")
+        print(f"║{f"Available database range: {min_year} - {max_year}".center(41) + '║'}")
+        print("╠" + "═" * 41 + "╣")
+        print(f"║{" 1. Search by a Specific Year".ljust(41) + '║'}")
+        print(f"║{" 2. Search by a Time Period Range".ljust(41) + '║'}")
+        print(f"║{" 0. Return to Main Menu".ljust(41) + '║'}")
+        print("╚" + "═" * 41 + "╝")
 
         while True:
             choice: str = input("Select an option: ").strip()
@@ -159,7 +166,9 @@ class UI:
                 return None
             if choice in ("1", "2"):
                 return choice
-            print("[!] Invalid selection! Please enter 1, 2, or 0.")
+            print("╔" + "═" * 50 + "╗")
+            print(f"║{"[!] Invalid selection! Please enter 1, 2, or 0.".center(50) + '║'}")
+            print("╚" + "═" * 50 + "╝")
 
     def start(self) -> None:
         """
@@ -173,19 +182,27 @@ class UI:
 
             if choice == "1":
                 while True:
-                    print("Enter 0 to return to the Main Menu.")
+                    print("╔" + "═" * 41 + "╗")
+                    print(f"║{'SEARCH BY TITLE'.center(41) + '║'}")
+                    print("╠" + "═" * 41 + "╣")
+                    print(f"║{'Enter 0 to return to the Main Menu.'.center(41) + '║'}")
+                    print("╚" + "═" * 41 + "╝")
                     user_input: str = input("Enter movie title: ").strip()
 
                     if user_input == "0":
                         break
 
                     if not user_input:
-                        print("Error: Movie title cannot be empty!")
+                        print("╔" + "═" * 41 + "╗")
+                        print(f"║{"Error: Movie title cannot be empty!".center(41) + '║'}")
+                        print("╚" + "═" * 41 + "╝")
                         continue
 
                     safe_input: str = self._sanitize_input(user_input)
                     if not safe_input:
-                        print("Error: Invalid search characters entered!")
+                        print("╔" + "═" * 41 + "╗")
+                        print(f"║{"Error: Invalid search characters entered!".center(41) + '║'}")
+                        print("╚" + "═" * 41 + "╝")
                         continue
 
                     self.user_current_query = safe_input
@@ -210,10 +227,15 @@ class UI:
                     continue
 
                 if year_mode == "1":
+                    print("╔" + "═" * 45 + "╗")
+                    print(f'║{"SEARCH BY YEAR".center(45) + "║"}')
+                    print("╚" + "═" * 45 + "╝")
                     year_input: str = input("Enter the specific release year: ").strip()
                     if not year_input.isdigit():
-                        print("Error: Year must be a valid numeric value!")
-                        input("Press Enter to return...")
+                        print("╔" + "═" * 45 + "╗")
+                        print(f"║{ "Error: Year must be a valid numeric value!".center(45) + '║'}")
+                        print("╠" + "═" * 45 + "╣")
+                        input(f"║{ "Press Enter to return...".center(45) + '║'}\n{"╚" + "═" * 45 + "╝"}")
                         continue
 
                     self.user_current_query = int(year_input)
@@ -222,12 +244,17 @@ class UI:
                     self.show_results_loop()
 
                 elif year_mode == "2":
+                    print("╔" + "═" * 41 + "╗")
+                    print(f'║{"SEARCH BY YEAR RANGE".center(41) + "║"}')
+                    print("╚" + "═" * 41 + "╝")
                     start_input: str = input("Enter starting year (FROM): ").strip()
                     end_input: str = input("Enter ending year (TO): ").strip()
 
                     if not (start_input.isdigit() and end_input.isdigit()):
-                        print("Error: Year boundaries must be valid numeric values!")
-                        input("Press Enter to return...")
+                        print("╔" + "═" * 56 + "╗")
+                        print(f"║{"Error: Year boundaries must be valid numeric values!".center(56) + '║'}")
+                        print("╠" + "═" * 56 + "╣")
+                        input(f"║{"Press Enter to return...".center(56) + '║'}\n{"╚" + "═" * 56 + "╝"}")
                         continue
 
                     self.year_start = int(start_input)
@@ -240,11 +267,15 @@ class UI:
                 self.show_statistics_menu()
 
             elif choice == "5":
-                print("\nThe program has been successfully closed. See you next time!")
+                print("╔" + "═" * 67 + "╗")
+                print(f"║{"The program has been successfully closed.See you next time!".center(67) + '║'}")
+                print("╚" + "═" * 67 + "╝")
                 break
             else:
-                print("\n[!] Invalid selection! Please choose a valid option from the menu.")
-                input("\nPress Enter to continue...")
+                print("╔" + "═" * 67 + "╗")
+                print(f"║{"[!] Invalid selection! Please choose a valid option from the menu.".center(67) + '║'}")
+                print("╠" + "═" * 67 + "╣")
+                input(f"║{"Press Enter to continue...".center(67) + '║'}\n{"╚" + "═" * 67 + "╝"}")
 
     def show_results_loop(self) -> None:
         """
@@ -278,26 +309,28 @@ class UI:
             current_page: int = (self.offset // self.limit) + 1
 
             if not movies:
-                print("\nNo movies found matching your request.")
+                print("\n╔" + "═" * 41 + "╗")
+                print(f"║{"No movies found matching your request.".center(41) + '║'}")
+                print("╚" + "═" * 41 + "╝")
                 self.reset_search_state()
                 break
 
             self.show_results_visual(movies, current_page)
 
-            print("\n" + "-" * 20)
-            print("Page Management:")
+            print("╔" + "═" * 35 + "╗")
+            print(f"║{" Page Management:".ljust(35) + '║'}")
             available_actions: Dict[str, str] = {}
 
             if len(movies) == self.limit:
-                print("1. Next Page (Forward)")
+                print(f"║{' 1. Next Page (Forward)'.ljust(35) + '║'}")
                 available_actions["1"] = "next"
 
             if self.offset > 0:
-                print("2. Previous Page (Backward)")
+                print(f"║{' 2. Previous Page (Backward)'.ljust(35) + '║'}")
                 available_actions["2"] = "prev"
 
-            print("0. Return to Main Menu")
-            print("-" * 20)
+            print(f"║{' 0. Return to Main Menu'.ljust(35) + '║'}")
+            print("╚" + "═" * 35 + "╝")
 
             user_choice: str = input("Select an option: ").strip()
 
@@ -312,8 +345,10 @@ class UI:
             elif action == "prev":
                 self.offset -= self.limit
             else:
-                print("\n[!] Option unavailable or invalid key pressed! Please try again.")
-                input("\nPress Enter to continue...")
+                print("\n╔" + "═" * 66 + "╗")
+                print(f"║{"[!] Option unavailable or invalid key pressed! Please try again.".center(66) + '║'}")
+                print("╠" + "═" * 66 + "╣")
+                input(f"║{"Press Enter to continue...".center(66) + '║'}\n{"╚" + "═" * 66 + "╝"}")
 
 
     def reset_search_state(self) -> None:
@@ -342,8 +377,10 @@ class UI:
         try:
             self.mongo.insert_log_into_mongo_db(log_document)
         except Exception as e:
-            print(f"\n[Warning] Failed to save logs to MongoDB: {e}")
-            input("Press Enter to continue...")
+            print("╔" + "═" * 66 + "╗")
+            print(f"║{f"[Warning] Failed to save logs to MongoDB: {e}".center(66) + '║'}")
+            print("╠" + "═" * 66 + "╣")
+            input(f"║{"Press Enter to continue...".center(66) + '║'}\n{"╚" + "═" * 67 + "╝"}")
 
     def get_top_5_frequent(self) -> list:
         """
@@ -370,44 +407,42 @@ class UI:
         while True:
             self.clear_screen()
             print("╔" + "═" * 50 + "╗")
-            print(f"║{'SEARCH STATISTICS (MONGODB)'.center(50)}║")
+            print(f"║{'SEARCH STATISTICS'.center(50)}║")
+            print("╠" + "═" * 50 + "╣")
+            print(f"║{" 1. Top 5 Most Frequent Queries".ljust(50) + '║'}")
+            print(f"║{" 2. Top 5 Most Recent Searches".ljust(50) + '║'}")
+            print(f"║{" 0. Back to Main Menu".ljust(50) + '║'}")
             print("╚" + "═" * 50 + "╝")
-            print("\n  1. 📈 Top 5 Most Frequent Queries")
-            print("  2. 🕒 Top 5 Most Recent Searches")
-            print("  0. Back to Main Menu")
-            print("-" * 52)
 
             choice: str = input("Select an option: ").strip()
 
             if choice == "0":
                 break
-
             elif choice == "1":
                 self.clear_screen()
-                print("=== TOP 5 MOST FREQUENT QUERIES ===")
+                print("╔" + "═" * 41 + "╗")
+                print(f"║{"=== TOP 5 MOST FREQUENT QUERIES ===".center(41) + '║'}")
+                print("╚" + "═" * 41 + "╝")
                 data = self.mongo.get_top_5_frequent()
 
                 if not data:
-                    print("\nNo statistics available yet.")
+                    print("╔" + "═" * 37 + "╗")
+                    print(f"║{"No statistics available yet.".center(37) + '║'}")
+                    print("╚" + "═" * 37 + "╝")
                 else:
                     for num, item in enumerate(data, 1):
                         print(f"  [{num}] Query: '{item['_id']}' — Searched {item['count']} times")
-
-                input("\nPress Enter to go back...")
-
-
+                print("╔" + "═" * 37 + "╗")
+                input(f"║{"Press Enter to go back...".center(37) + '║'}\n{"╚" + "═" * 37 + "╝"}")
             elif choice == "2":
-
                 self.clear_screen()
-
-                print("=== TOP 5 MOST RECENT SEARCHES ===")
+                print("╔" + "═" * 41 + "╗")
+                print(f"║{"=== TOP 5 MOST RECENT SEARCHES ===".center(41) + '║'}")
+                print("╚" + "═" * 41 + "╝")
 
                 data = self.mongo.get_top_5_recent()
-
                 if not data:
-
                     print("\nNo statistics available yet.")
-
                 else:
                     for num, item in enumerate(data, 1):
                         search_type: str = item.get('search_type', 'unknown')
@@ -416,4 +451,10 @@ class UI:
                         clean_timestamp: str = raw_timestamp.replace('T', ' ').split('.')[0]
                         param_str = ", ".join([f"{k}: {v}" for k, v in params.items()])
                         print(f"  [{num}] [{clean_timestamp}] Mode: {search_type} | ({param_str})")
-                input("\nPress Enter to go back...")
+                print("╔" + "═" * 37 + "╗")
+                input(f"║{"Press Enter to go back...".center(37) + '║'}\n{"╚" + "═" * 37 + "╝"}")
+            else:
+                print("\n╔" + "═" * 66 + "╗")
+                print(f"║{"[!] Option unavailable or invalid key pressed! Please try again.".center(66) + '║'}")
+                print("╚" + "═" * 66 + "╝")
+                input("Press Enter to continue...")
