@@ -138,7 +138,7 @@ class UI:
                     continue
             return user_choice
 
-    def show_years_range_and_get_choice(self) -> Optional[str]:
+    def show_years_range(self) -> Optional[str]:
         """
         Displays the available movie release year thresholds stored in the database
         and prompts the user to choose between single year or period range searches.
@@ -223,7 +223,7 @@ class UI:
                 self.show_results_loop()
 
             elif choice == "3":
-                year_mode: Optional[str] = self.show_years_range_and_get_choice()
+                year_mode: Optional[str] = self.show_years_range()
                 if year_mode is None:
                     continue
 
