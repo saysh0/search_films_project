@@ -286,9 +286,7 @@ class UI:
         """
         while True:
             if self.search_mode == "keyword":
-                movies: Optional[List[Dict[str, Any]]] = self.db.search_film_with_keyword(
-                    self.user_current_query, self.limit, self.offset
-                )
+                movies: Optional[List[Dict[str, Any]]] = self.db.search_film_with_keyword(self.user_current_query, self.limit, self.offset)
             elif self.search_mode == "genre":
                 movies = self.db.search_film_by_category(self.user_current_query, self.limit, self.offset)
             elif self.search_mode == "year_single":
