@@ -41,20 +41,16 @@ class SQL_DB:
             print(f"Детали ошибки: {exc_val}\n")
             if self.conn:
                 try:
-                    self.conn.rollback()
+                    self.conn.close()
                 except pymysql.MySQLError:
                     pass
                 finally:
-                    self.conn.close()
                     self.conn = None
             return True
 
         if self.conn:
             try:
-                if exc_type:
-                    self.conn.rollback()
-                else:
-                    self.conn.commit()
+                pass
             finally:
                 self.conn.close()
                 self.conn = None
@@ -73,4 +69,3 @@ class SQL_DB:
         with self.conn.cursor() as cursor:
             cursor.execute(query, params)
             return cursor.fetchall()
-
